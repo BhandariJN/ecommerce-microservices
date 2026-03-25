@@ -10,5 +10,5 @@ public record ProductPurchaseRequest(
 
         @NotNull(message = "quantity is required")
         @Positive(message = "quantity should be positive")
-        double quantity) {
+        Integer quantity) {
 }

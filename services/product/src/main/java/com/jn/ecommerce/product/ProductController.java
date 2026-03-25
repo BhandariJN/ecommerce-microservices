@@ -17,8 +17,8 @@ public class ProductController {
     public ResponseEntity<Integer> createProduct(@RequestBody @Valid ProductRequest request) {
         return ResponseEntity.ok(productService.createProduct(request));
     }
-    @PostMapping
-    public ResponseEntity<List<ProductPurchaseResponse>> createProduct(@RequestBody @Valid List<ProductPurchaseRequest> request) {
+    @PostMapping("/purchase")
+    public ResponseEntity<List<ProductPurchaseResponse>> purchaseProducts(@RequestBody @Valid List<ProductPurchaseRequest> request) {
         return ResponseEntity.ok(productService.purchaseProducts(request));
     }
 

@@ -12,6 +12,6 @@ public record ProductPurchaseResponse(
 
         BigDecimal price,
 
-        double quantity
+        Integer quantity
 ) {
 }
