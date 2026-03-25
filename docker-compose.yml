@@ -1,0 +1,84 @@
+services:
+  postgres:
+    container_name: ms_postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      PGDATA: /var/lib/postgresql/data
+      TZ: UTC
+      PGTZ: UTC
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+
+  pgadmin:
+    container_name: ms_pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+  mongodb:
+    container_name: ms_mongodb
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - mongo:/data
+    ports:
+      - "27017:27017"
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+
+  mongodb-express:
+    container_name: ms_mongodb_express
+    image: mongo-express:latest
+    depends_on:
+      - mongodb
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+    ports:
+        - "8081:8081"
+    networks:
+        - microservices-network
+    restart: unless-stopped
+
+
+  mail-dev:
+    container_name: ms_mail_dev
+    image: maildev/maildev:latest
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+networks:
+  microservices-network:
+    driver: bridge
+
+
+volumes:
+  postgres:
+  pgadmin:
+  mongo:
