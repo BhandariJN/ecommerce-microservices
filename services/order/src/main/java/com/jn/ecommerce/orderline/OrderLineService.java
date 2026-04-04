@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OrderLineService {
@@ -17,4 +19,10 @@ public class OrderLineService {
         return orderLineRepository.save(order).getId();
     }
 
+    public List<OrderLineResponse> findAllByOrderId(Integer orderId) {
+        return orderLineRepository.findAllByOrderId(orderId)
+                .stream()
+                .map(orderLineMapper::toOrderLineResponse)
+                .toList();
+    }
 }

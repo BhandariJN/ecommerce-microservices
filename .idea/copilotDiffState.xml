@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="/OrderApplication (snapshot).java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="/OrderApplication (snapshot).java" />
+              <option name="originalContent" value="package com.jn.ecommerce;&#10;&#10;import org.springframework.boot.SpringApplication;&#10;import org.springframework.boot.autoconfigure.SpringBootApplication;&#10;import org.springframework.cloud.openfeign.EnableFeignClients;&#10;import org.springframework.data.jpa.repository.config.EnableJpaAuditing;&#10;&#10;import java.util.TimeZone;&#10;&#10;@SpringBootApplication&#10;@EnableFeignClients&#10;@EnableJpaAuditing&#10;public class OrderApplication {&#10;&#10;&#9;public static void main(String[] args) {&#10;&#10;&#9;&#9;TimeZone.setDefault(TimeZone.getTimeZone(&quot;UTC&quot;));&#10;&#9;&#9;SpringApplication.run(OrderApplication.class, args);&#10;&#9;}&#10;&#10;}&#10;" />
+              <option name="updatedContent" value="package com.jn.ecommerce;&#10;&#10;import org.springframework.boot.SpringApplication;&#10;import org.springframework.boot.autoconfigure.SpringBootApplication;&#10;import org.springframework.cloud.openfeign.EnableFeignClients;&#10;import org.springframework.data.jpa.repository.config.EnableJpaAuditing;&#10;import org.springframework.scheduling.annotation.EnableAsync;&#10;&#10;import java.util.TimeZone;&#10;&#10;@SpringBootApplication&#10;@EnableFeignClients&#10;@EnableJpaAuditing&#10;@EnableAsync&#10;public class OrderApplication {&#10;&#10;&#9;public static void main(String[] args) {&#10;&#10;&#9;&#9;TimeZone.setDefault(TimeZone.getTimeZone(&quot;UTC&quot;));&#10;&#9;&#9;SpringApplication.run(OrderApplication.class, args);&#10;&#9;}&#10;&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="/Payment (snapshot).java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="/Payment (snapshot).java" />
+              <option name="originalContent" value="package com.jn.ecommerce.payment;&#10;&#10;&#10;import jakarta.persistence.*;&#10;import lombok.*;&#10;import org.springframework.data.annotation.CreatedDate;&#10;import org.springframework.data.annotation.LastModifiedDate;&#10;import org.springframework.data.jpa.domain.support.AuditingEntityListener;&#10;&#10;import java.math.BigDecimal;&#10;import java.time.LocalDateTime;&#10;&#10;@AllArgsConstructor&#10;@NoArgsConstructor&#10;@Builder&#10;@Getter&#10;@Setter&#10;@Entity&#10;@EntityListeners(AuditingEntityListener.class)&#10;public class Payment {&#10;&#10;    @Id&#10;    @GeneratedValue(strategy = GenerationType.IDENTITY)&#10;    private Integer id;&#10;&#10;    private BigDecimal amount;&#10;&#10;    @Enumerated(EnumType.STRING)&#10;    private PaymentMethod paymentMethod;&#10;&#10;    private Integer orderId;&#10;&#10;    @CreatedDate&#10;    @Column(updatable = false, nullable = false)&#10;    private LocalDateTime createdAt;&#10;&#10;    @LastModifiedDate&#10;    @Column(updatable = false, nullable = false)&#10;    private LocalDateTime lastModifiedDate;&#10;&#10;}&#10;" />
+              <option name="updatedContent" value="package com.jn.ecommerce.payment;&#10;&#10;&#10;import jakarta.persistence.*;&#10;import lombok.*;&#10;import org.springframework.data.annotation.CreatedDate;&#10;import org.springframework.data.annotation.LastModifiedDate;&#10;import org.springframework.data.jpa.domain.support.AuditingEntityListener;&#10;&#10;import java.math.BigDecimal;&#10;import java.time.LocalDateTime;&#10;&#10;@AllArgsConstructor&#10;@NoArgsConstructor&#10;@Builder&#10;@Getter&#10;@Setter&#10;@Entity&#10;@EntityListeners(AuditingEntityListener.class)&#10;public class Payment {&#10;&#10;    @Id&#10;    @SequenceGenerator(name = &quot;payment_id_seq_gen&quot;, sequenceName = &quot;payment_id_seq&quot;, allocationSize = 1)&#10;    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;payment_id_seq_gen&quot;)&#10;    private Integer id;&#10;&#10;    private BigDecimal amount;&#10;&#10;    @Enumerated(EnumType.STRING)&#10;    private PaymentMethod paymentMethod;&#10;&#10;    private Integer orderId;&#10;&#10;    @CreatedDate&#10;    @Column(updatable = false, nullable = false)&#10;    private LocalDateTime createdAt;&#10;&#10;    @LastModifiedDate&#10;    @Column(updatable = false, nullable = false)&#10;    private LocalDateTime lastModifiedDate;&#10;&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -1,5 +1,10 @@
 package com.jn.ecommerce.order;
 
+import com.jn.ecommerce.exception.EntityNotFoundException;
+import com.jn.ecommerce.kafka.OrderConfirmation;
+import com.jn.ecommerce.kafka.OrderProducer;
+import com.jn.ecommerce.payment.PaymentClient;
+import com.jn.ecommerce.payment.PaymentRequest;
 import org.springframework.stereotype.Service;
 
 import com.jn.ecommerce.customer.CustomerClient;
@@ -12,6 +17,8 @@ import com.jn.ecommerce.product.PurchaseRequest;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -23,6 +30,10 @@ public class OrderService {
     private final OrderLineService orderLineService;
 
     private final OrderMapper orderMapper;
+
+    private final OrderProducer orderProducer;
+
+    private final PaymentClient paymentClient;
 
     public Integer createOrder(OrderRequest request) {
         // check the customer
@@ -50,9 +61,37 @@ public class OrderService {
         }
 
         // Start payment process
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
         // send the order confirmation --> notification -ms (Kafka)
-        return null;
+        orderProducer.sendOrderConfirmation(new OrderConfirmation(
+                order.getReference(),
+                order.getTotalAmount(),
+                order.getPaymentMethod(),
+                customer,
+                purchasedProducts
+        ));
+        return order.getId();
     }
 
+    public List<OrderResponse> getAllOrders() {
+        return orderRepository.findAll()
+                .stream()
+                .map(orderMapper::toResponse)
+                .toList();
+    }
+
+    public OrderResponse getOrderById(Integer id) {
+        return orderRepository.findById(id).map(
+                        orderMapper::toResponse
+                )
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Order not found with id: %d", id)));
+    }
 }

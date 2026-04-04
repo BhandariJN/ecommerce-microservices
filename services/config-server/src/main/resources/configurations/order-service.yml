@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/order
+    url: jdbc:postgresql://localhost:5432/order-service
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
@@ -17,15 +17,19 @@ spring:
         show_sql: true
         jdbc:
             time_zone: UTC
-
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: orderConfirmation:com.jn.ecommerce.kafka.OrderConfirmation
 server:
   port: 8070
 
 
 application:
   config:
-    customer-url:http://localhost:8222/api/v1/customers
-    product-url:http://localhost:8222/api/v1/products
-    payment-url:http://localhost:8222/api/v1/payment
-
-
+    customer-url: http://localhost:8222/api/v1/customers
+    product-url: http://localhost:8222/api/v1/products
+    payment-url: http://localhost:8222/api/v1/payments
